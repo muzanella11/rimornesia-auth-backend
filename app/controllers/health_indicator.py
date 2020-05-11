@@ -1,13 +1,11 @@
-from flask import jsonify
+from app.core.controllers import BaseControllers
 
-class HealthIndicator(object):
+class HealthIndicator(BaseControllers):
     def run(self):
         data = {
             'code': 200,
-            'message': 'Success'
+            'message': 'Success',
+            'data': []
         }
 
-        return (
-            jsonify(**data),
-            data['code']
-        )
+        return self.create_response(data)
