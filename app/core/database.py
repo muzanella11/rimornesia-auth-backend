@@ -58,6 +58,7 @@ class Database(object):
         result['mysql_instance'] = self.mysql_instance
         result['mysql_connection'] = self.mysql_connection
         result['mysql_ctx'] = self.mysql_ctx
+        result['mysql'] = self.mysql_ctx
 
         return result
 
@@ -104,7 +105,7 @@ class Database(object):
             print("[{}] table {}: ".format(action_name, table_name), end='')
             context.mysql_ctx.execute(action_command)
 
-            if action_name == 'INSERT' or action_name == 'UPDATE':
+            if action_name == 'INSERT' or action_name == 'UPDATE' or action_name == 'DELETE':
                 context.mysql_connection.commit()
 
         except context.mysql_instance.Error as err:
