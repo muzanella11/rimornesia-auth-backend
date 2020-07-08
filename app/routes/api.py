@@ -5,10 +5,12 @@ from app.controllers.secret import Secret
 from app.controllers.user_roles import UserRoles
 from app.controllers.applications import Applications
 from app.controllers.access_control import AccessControl
+from app.controllers.user_types import UserTypes
 
 @app.route('/api')
 def helloapi():
     return "Hello World!"
+
 ## Health Check ##
 @app.route('/health')
 def health_indicator():
@@ -102,4 +104,29 @@ def accesscontrolupdateapi(id):
 @app.route('/access-control/<id>', methods=['DELETE'])
 def accesscontroldeleteapi(id):
     return AccessControl(request).delete_data(id)
+##################
+
+## User Types ##
+@app.route('/user/type')
+def typelistapi():
+    return UserTypes(request).get_list()
+
+@app.route('/user/type/<value>')
+def typedetailapi(value):
+    if value.isnumeric():
+        return UserTypes(request).get_detail('id', value)
+
+    return UserTypes(request).get_detail('name', value)
+
+@app.route('/user/type', methods=['POST'])
+def typecreateapi():
+    return UserTypes(request).create_data()
+
+@app.route('/user/type/<id>', methods=['PUT'])
+def typeupdateapi(id):
+    return UserTypes(request).update_data(id)
+
+@app.route('/user/type/<id>', methods=['DELETE'])
+def typedeleteapi(id):
+    return UserTypes(request).delete_data(id)
 ##################
