@@ -58,7 +58,6 @@ class Database(object):
         result['mysql_instance'] = self.mysql_instance
         result['mysql_connection'] = self.mysql_connection
         result['mysql_ctx'] = self.mysql_ctx
-        result['mysql'] = self.mysql_ctx
 
         return result
 
@@ -107,6 +106,8 @@ class Database(object):
 
             if action_name == 'INSERT' or action_name == 'UPDATE' or action_name == 'DELETE':
                 context.mysql_connection.commit()
+
+                context.mysql_lastrowid = int(context.mysql_ctx.lastrowid)
 
         except context.mysql_instance.Error as err:
             print("[FAILED]")

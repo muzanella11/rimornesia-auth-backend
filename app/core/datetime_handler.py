@@ -14,17 +14,29 @@ class DateTime(object):
     hours = 0
     minutes = 0
     seconds = 0
+    is_utc_timezone = False
+    config = {}
 
-    def __init__(self):
+    def __init__(self, config = None):
         super(DateTime, self).__init__()
+
+        if config:
+            self.config = config
+
+        if self.config.get('is_utc_timezone'):
+            self.is_utc_timezone = self.config.get('is_utc_timezone')
 
         self.set_date_time_now()
 
     def set_date_time_now(self):
         self.date_time_now = datetime.now()
+
+        if self.is_utc_timezone:
+            self.date_time_now = datetime.utcnow()
+
         self.date_time_now = self.date_time_now.strftime("%Y-%m-%d %H:%M:%S")
 
-    def get_date_time_now(self):
+    def get_date_time_now(self, convert_to_utc = False):
         return self.date_time_now
 
     def time_elapsed_string(self, time_ago):
@@ -91,12 +103,20 @@ class DateTime(object):
 
         print('hours : ', self.hours)
 
-    def context_to_string(self, context, format = None):
+    def context_to_string(self, context = None, format = None):
         # Context is `datetime`
         if format != None:
-            return context.strftime("%Y-%m-%d %H:%M:%S")
+            return context.strftime(format)
 
         return context.strftime("%Y-%m-%d %H:%M:%S")
+
+    def context_to_datetime(self, datetime_value = None, format = None):
+        if datetime_value == None: return
+
+        if format != None:
+            return datetime.strptime(datetime_value, format)
+
+        return datetime.strptime(datetime_value, "%Y-%m-%d %H:%M:%S")
 
     def timezone(self, formatted = True):
         timezone = strftime("%z", gmtime())

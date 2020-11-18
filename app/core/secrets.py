@@ -4,7 +4,7 @@ import os
 class Secrets(object):
     prefix_key = 'enem'
     subfix_key = 'project'
-    key_secret = b'Gqtv_DlmPiGbdYU6dGA0Za-Iei1Kvs9NT_vVrv-vQx0='
+    key_secret = 'Gqtv_DlmPiGbdYU6dGA0Za-Iei1Kvs9NT_vVrv-vQx0='
     value = ''
     config = None
 
@@ -16,6 +16,7 @@ class Secrets(object):
 
     def generate_key(self):
         key = Fernet.generate_key()
+        key = key.decode('utf-8')
 
         return key
 
@@ -24,13 +25,15 @@ class Secrets(object):
 
     def encrypt(self):
         f = Fernet(self.key_secret)
-        token = f.encrypt(b"{}".format(self.value))
+        token = f.encrypt('{}'.format(self.value).encode())
+        token = token.decode('utf-8')
 
         return token
 
     def decrypt(self):
         f = Fernet(self.key_secret)
-        f_text = b"{}".format(self.value)
+        f_text = "{}".format(self.value).encode()
         result = (f.decrypt(f_text))
+        result = result.decode('utf-8')
 
         return result

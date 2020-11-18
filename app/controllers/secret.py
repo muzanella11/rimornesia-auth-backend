@@ -26,6 +26,7 @@ class Secret(BaseControllers):
             'data': []
         }
 
+        # secret_value = Secrets({}).generate_key()
         secret_value = Secrets({}).generate_key()
 
         data['data'] = secret_value
