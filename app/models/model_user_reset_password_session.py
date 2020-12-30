@@ -1,14 +1,20 @@
 from app import app
 from app.core.models import Models
+import json
 
-class ModelUserRoles(Models):
+class ModelUserResetPasswordSession(Models):
     def __init__(self, params = None):
-        super(ModelUserRoles, self).__init__(params)
+        super(ModelUserResetPasswordSession, self).__init__(params)
 
-        self.table_name = 'user_roles'
+        self.table_name = 'user_reset_password_session'
 
     def get_list(self):
-        sql_rows = self.execute("SELECT id, name, label, description, {}, {} from `{}`".format(self.convert_time_zone('created_at'), self.convert_time_zone('updated_at'), self.table_name))
+        sql_rows = self.execute("SELECT \
+        id, \
+        token, \
+        user_id, \
+        expired, \
+        {}, {} from `{}`".format(self.convert_time_zone('created_at'), self.convert_time_zone('updated_at'), self.table_name))
 
         convert_attribute_list = [
             'created_at',
@@ -23,7 +29,12 @@ class ModelUserRoles(Models):
         if columns == "name":
             value = value.replace('-', ' ')
 
-        sql_rows = self.execute("SELECT id, name, label, description, {}, {} from `{}` WHERE `{}` = '{}'".format(self.convert_time_zone('created_at'), self.convert_time_zone('updated_at'), self.table_name, columns, value))
+        sql_rows = self.execute("SELECT \
+        id, \
+        token, \
+        user_id, \
+        expired, \
+        {}, {} from `{}` WHERE `{}` = '{}'".format(self.convert_time_zone('created_at'), self.convert_time_zone('updated_at'), self.table_name, columns, value))
 
         convert_attribute_list = [
             'created_at',
@@ -40,8 +51,18 @@ class ModelUserRoles(Models):
         action['{}'.format(self.table_name)] = {
             'action': self.action_type.get('insert'),
             'command': (
-                "INSERT INTO `{}` (`name`, `label`, `description`, `created_at`) VALUES".format(self.table_name) +
-                " ('{}', '{}', '{}', NOW())".format(value.get('name'), value.get('label'), value.get('description'))
+                "INSERT INTO `{}` (\
+                `token`, \
+                `user_id`, \
+                `created_at` \
+                ) VALUES".format(self.table_name) +
+                " (\
+                '{}',\
+                '{}',\
+                NOW())".format(
+                    value.get('token'),
+                    value.get('user_id')
+                )
             )
         }
 

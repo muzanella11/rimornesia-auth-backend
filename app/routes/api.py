@@ -6,6 +6,10 @@ from app.controllers.user_roles import UserRoles
 from app.controllers.applications import Applications
 from app.controllers.access_control import AccessControl
 from app.controllers.user_types import UserTypes
+from app.controllers.user_identity_types import UserIdentityTypes
+from app.controllers.users import Users
+from app.controllers.verification import Verification
+from app.controllers.authentication import Authentication
 
 @app.route('/api')
 def helloapi():
@@ -54,6 +58,31 @@ def roleupdateapi(id):
 @app.route('/user/role/<id>', methods=['DELETE'])
 def roledeleteapi(id):
     return UserRoles(request).delete_data(id)
+##################
+
+## User Identity Types ##
+@app.route('/user/identity-type')
+def identitytypelistapi():
+    return UserIdentityTypes(request).get_list()
+
+@app.route('/user/identity-type/<value>')
+def identitytypedetailapi(value):
+    if value.isnumeric():
+        return UserIdentityTypes(request).get_detail('id', value)
+
+    return UserIdentityTypes(request).get_detail('name', value)
+
+@app.route('/user/identity-type', methods=['POST'])
+def identitytypecreateapi():
+    return UserIdentityTypes(request).create_data()
+
+@app.route('/user/identity-type/<id>', methods=['PUT'])
+def identitytypeupdateapi(id):
+    return UserIdentityTypes(request).update_data(id)
+
+@app.route('/user/identity-type/<id>', methods=['DELETE'])
+def identitytypedeleteapi(id):
+    return UserIdentityTypes(request).delete_data(id)
 ##################
 
 ## Applications ##
@@ -129,4 +158,57 @@ def typeupdateapi(id):
 @app.route('/user/type/<id>', methods=['DELETE'])
 def typedeleteapi(id):
     return UserTypes(request).delete_data(id)
+##################
+
+## Users ##
+@app.route('/user')
+def userslistapi():
+    return Users(request).get_list()
+
+@app.route('/user/<value>')
+def usersdetailapi(value):
+    if value.isnumeric():
+        return Users(request).get_detail('id', value)
+
+    return Users(request).get_detail('username', value)
+
+@app.route('/user', methods=['POST'])
+def userscreateapi():
+    return Users(request).create_data()
+
+@app.route('/user/<id>', methods=['PUT'])
+def usersupdateapi(id):
+    return Users(request).update_data(id)
+
+@app.route('/user/<id>', methods=['DELETE'])
+def usersdeleteapi(id):
+    return Users(request).delete_data(id)
+##################
+
+## Verification User ##
+@app.route('/verification/<token>')
+def verificationapi(token):
+    return Verification(request).verify(token)
+
+@app.route('/verification/new', methods=['POST'])
+def verificationnewapi():
+    return Verification(request).request_new_token()
+##################
+
+## Authentication ##
+@app.route('/auth/signup', methods=['POST'])
+def signupapi():
+    return Authentication(request).create_data()
+
+@app.route('/auth/reset-password/<token>')
+def resetpasswordcheckapi(token):
+    return Authentication(request).reset_password_check(token)
+
+@app.route('/auth/reset-password/<token>', methods=['POST'])
+def resetpasswordapi(token):
+    return Authentication(request).reset_password(token)
+
+@app.route('/auth/reset-password/new', methods=['POST'])
+def resetpasswordnewapi():
+    return Authentication(request).request_reset_password()
 ##################
