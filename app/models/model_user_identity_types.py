@@ -1,11 +1,11 @@
 from app import app
 from app.core.models import Models
 
-class ModelUserRoles(Models):
+class ModelUserIdentityTypes(Models):
     def __init__(self, params = None):
-        super(ModelUserRoles, self).__init__(params)
+        super(ModelUserIdentityTypes, self).__init__(params)
 
-        self.table_name = 'user_roles'
+        self.table_name = 'user_identity_types'
 
     def get_list(self):
         sql_rows = self.execute("SELECT id, name, label, description, {}, {} from `{}`".format(self.convert_time_zone('created_at'), self.convert_time_zone('updated_at'), self.table_name))

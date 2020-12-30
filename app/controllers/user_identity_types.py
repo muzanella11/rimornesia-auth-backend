@@ -1,14 +1,14 @@
 from app.core.controllers import BaseControllers
-from app.models.model_user_roles import ModelUserRoles
+from app.models.model_user_identity_types import ModelUserIdentityTypes
 import re
 
-class UserRoles(BaseControllers):
+class UserIdentityTypes(BaseControllers):
     request = None
 
     TABLES = {}
 
     def __init__(self, request = None):
-        super(UserRoles, self).__init__()
+        super(UserIdentityTypes, self).__init__()
 
         self.request = request
 
@@ -35,7 +35,7 @@ class UserRoles(BaseControllers):
             'filter': self.request.args
         }
 
-        data_sql = getattr(ModelUserRoles(data_model), 'get_list')()
+        data_sql = getattr(ModelUserIdentityTypes(data_model), 'get_list')()
 
         data['data'] = data_sql.get('data')
         data['total_data'] = data_sql.get('total_rows')
@@ -57,7 +57,7 @@ class UserRoles(BaseControllers):
             'total_data': 0
         }
 
-        data_sql = getattr(ModelUserRoles(), 'get_detail_by')(columns, value)
+        data_sql = getattr(ModelUserIdentityTypes(), 'get_detail_by')(columns, value)
 
         data['data'] = data_sql.get('data')
         data['total_data'] = data_sql.get('total_rows')
@@ -82,7 +82,7 @@ class UserRoles(BaseControllers):
             'description': description
         }
 
-        getattr(ModelUserRoles(), 'create_data')(data_model)
+        getattr(ModelUserIdentityTypes(), 'create_data')(data_model)
 
         return self.create_response(data)
 
@@ -106,7 +106,7 @@ class UserRoles(BaseControllers):
             'data': queries
         }
 
-        getattr(ModelUserRoles(), 'update_data')(data_model)
+        getattr(ModelUserIdentityTypes(), 'update_data')(data_model)
 
         return self.create_response(data)
 
@@ -117,7 +117,7 @@ class UserRoles(BaseControllers):
             'total_data': 0
         }
 
-        data_sql = getattr(ModelUserRoles(), 'delete_data')(role_id)
+        data_sql = getattr(ModelUserIdentityTypes(), 'delete_data')(role_id)
 
         return self.create_response(data)
         
