@@ -219,9 +219,17 @@ def verificationnewapi():
 ##################
 
 ## Authentication ##
+@app.route('/auth/signin', methods=['POST'])
+def signinapi():
+    return Authentication(request).signin()
+
 @app.route('/auth/signup', methods=['POST'])
 def signupapi():
     return Authentication(request).create_data()
+
+@app.route('/auth/whoami/<token>', methods=['POST'])
+def whoamiapi(token):
+    return Authentication(request).whoami(token)
 
 @app.route('/auth/reset-password/<token>')
 def resetpasswordcheckapi(token):

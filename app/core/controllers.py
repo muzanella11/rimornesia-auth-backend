@@ -18,3 +18,23 @@ class BaseControllers(object):
             jsonify(**data),
             data['code']
         )
+
+    def error_response(self, errors = []):
+        # Errors attribute structure default
+        base_error = [
+            {
+                'field': 'your_field',
+                'messages': 'Your error message'
+            }
+        ]
+
+        base_response = {
+            'code': 400,
+            'messages': 'Bad Request',
+            'errors': errors
+        }
+
+        if len(errors) == 0:
+            base_response['errors'] = base_error
+
+        return self.create_response(base_response)

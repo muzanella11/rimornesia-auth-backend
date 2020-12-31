@@ -111,7 +111,7 @@ class Users(BaseControllers):
 
         return self.create_response(data)
 
-    def update_data(self, role_id = None):
+    def update_data(self, user_id = None):
         data = {
             'code': 200,
             'message': 'Success',
@@ -166,7 +166,7 @@ class Users(BaseControllers):
         )
         
         data_model = {
-            'id': role_id,
+            'id': user_id,
             'data': queries
         }
 
