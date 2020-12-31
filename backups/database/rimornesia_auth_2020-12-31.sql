@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.31)
 # Database: rimornesia_auth
-# Generation Time: 2020-12-30 22:13:20 +0000
+# Generation Time: 2020-12-31 08:25:44 +0000
 # ************************************************************
 
 
@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS `access_climbing_post`;
 
 CREATE TABLE `access_climbing_post` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `key_access` text,
   `user_id` int(11) DEFAULT NULL,
   `climbing_post_id` int(11) DEFAULT NULL,
   `is_active` int(5) DEFAULT '0',
@@ -36,6 +37,15 @@ CREATE TABLE `access_climbing_post` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `access_climbing_post` WRITE;
+/*!40000 ALTER TABLE `access_climbing_post` DISABLE KEYS */;
+
+INSERT INTO `access_climbing_post` (`id`, `key_access`, `user_id`, `climbing_post_id`, `is_active`, `is_owner`, `created_at`, `updated_at`)
+VALUES
+	(1,'VJTDTZXL-C1MJ71M0-EJHHJDFE-OTVSWDC1-ILLNQ1PN-JSKBKFCF-3DK7DY9Q-D8LVTPVV',1,1,1,1,'2020-12-31 08:24:03',NULL);
+
+/*!40000 ALTER TABLE `access_climbing_post` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table access_controls
@@ -254,6 +264,7 @@ CREATE TABLE `users` (
   `cover_image` varchar(50) DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
   `roles` int(11) DEFAULT '4',
+  `key_access_climbing_post` text,
   `is_verified` int(2) DEFAULT '0',
   `verification_token` text,
   `is_verified_account` int(2) DEFAULT '0',
@@ -266,14 +277,14 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `display_name`, `email`, `password`, `username`, `dob`, `age`, `gender`, `phone`, `identity`, `identity_type`, `address`, `avatar`, `cover_image`, `status`, `roles`, `is_verified`, `verification_token`, `is_verified_account`, `completed`, `created_at`, `updated_at`)
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `display_name`, `email`, `password`, `username`, `dob`, `age`, `gender`, `phone`, `identity`, `identity_type`, `address`, `avatar`, `cover_image`, `status`, `roles`, `key_access_climbing_post`, `is_verified`, `verification_token`, `is_verified_account`, `completed`, `created_at`, `updated_at`)
 VALUES
-	(1,'Super','Administrator','Super Administrator','super-admin@gmail.com','password','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,1,NULL,NULL,NULL,'2020-11-20 06:23:08','2020-12-02 08:23:22'),
-	(2,'Super','Administrator','None','super-admin2@gmail.com','gAAAAABft2r7b8MG5Hoxh2hKYKCUfc8z7wm-ZCRPAFN4JgGFrYWUfuNF-xBOGW6-7n7XUcr9I7mFNjcWQuoDPSphAfWce9HaSA==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,0,NULL,NULL,NULL,'2020-11-20 07:06:35',NULL),
-	(3,'Super','Administrator','None','super-admin3@gmail.com','gAAAAABft3C6080kjOZsSoBfTnJPI9WAor1cXT9SaeZAZ9unykRtnXHV-FQmK_iXk30uzgQYbsBsTQ_UWrGdL31FwKN2T8tY0w==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,0,NULL,0,NULL,'2020-11-20 07:31:06',NULL),
-	(4,'Super','Administrator','None','super-admin4@gmail.com','gAAAAABfvKlkZ1Oz0mVLGfTy3B1Ag8rKx2iZ-8M1TAb3_sYzeVs6Iw5v-4si-S-Sf1SZSUUCWLEBGvkt9tag2gqb7Tc7C0si-A==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,0,'EZZQU4NY-OE0VYVII-XLQOSK3O-BSSQATCZ-QTDRKGGC-WZLXWQZK-5R9QWOFG-SLAXQNHW',0,NULL,'2020-11-24 06:34:12',NULL),
-	(5,'Super','Administrator','None','super-admin5@gmail.com','gAAAAABf7Dr_BpRN6O2wIQzL65buJCQA94yVGVggRpdb6I-gMZBWO_b5WsRiRCtAMByzSKRwY473NRDP2TUAeTVYYy-J9VvZ2A==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,1,'VMBDG3PW-VF204BWW-WUYMDS39-H9WJKWJN-X0KXTKOR-K6Z9AIGQ-RUKCGZSG-S2LRQHFW',0,NULL,'2020-12-02 02:56:13','2020-12-30 08:31:59'),
-	(6,'Super','Administrator 6','None','super-admin6@gmail.com','gAAAAABf7D5YLdtIZV648CB3jiNxmAxMOc7DIB-EahbBHKDpYN1ZUgRfUHHZAGI6fUv9sx6XYdIXeTva0RT1rBnUg1lQdDG3Mg==','super-admin-6','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,4,0,'BPU3FZ7V-NFEVC9AH-THWBMF8K-7ON0KOWA-HJOI2TA8-28U2Q2RR-DJVXH4LA-8ML7K1VT',0,NULL,'2020-12-30 08:46:16',NULL);
+	(1,'Super','Administrator','Super Administrator','super-admin@gmail.com','password','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,'VJTDTZXL-C1MJ71M0-EJHHJDFE-OTVSWDC1-ILLNQ1PN-JSKBKFCF-3DK7DY9Q-D8LVTPVV',1,NULL,NULL,NULL,'2020-11-20 06:23:08','2020-12-31 08:24:03'),
+	(2,'Super','Administrator','None','super-admin2@gmail.com','gAAAAABft2r7b8MG5Hoxh2hKYKCUfc8z7wm-ZCRPAFN4JgGFrYWUfuNF-xBOGW6-7n7XUcr9I7mFNjcWQuoDPSphAfWce9HaSA==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,NULL,0,NULL,NULL,NULL,'2020-11-20 07:06:35',NULL),
+	(3,'Super','Administrator','None','super-admin3@gmail.com','gAAAAABft3C6080kjOZsSoBfTnJPI9WAor1cXT9SaeZAZ9unykRtnXHV-FQmK_iXk30uzgQYbsBsTQ_UWrGdL31FwKN2T8tY0w==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,NULL,0,NULL,0,NULL,'2020-11-20 07:31:06',NULL),
+	(4,'Super','Administrator','None','super-admin4@gmail.com','gAAAAABfvKlkZ1Oz0mVLGfTy3B1Ag8rKx2iZ-8M1TAb3_sYzeVs6Iw5v-4si-S-Sf1SZSUUCWLEBGvkt9tag2gqb7Tc7C0si-A==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,NULL,0,'EZZQU4NY-OE0VYVII-XLQOSK3O-BSSQATCZ-QTDRKGGC-WZLXWQZK-5R9QWOFG-SLAXQNHW',0,NULL,'2020-11-24 06:34:12',NULL),
+	(5,'Super','Administrator','None','super-admin5@gmail.com','gAAAAABf7Dr_BpRN6O2wIQzL65buJCQA94yVGVggRpdb6I-gMZBWO_b5WsRiRCtAMByzSKRwY473NRDP2TUAeTVYYy-J9VvZ2A==','super-admin','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,1,NULL,1,'VMBDG3PW-VF204BWW-WUYMDS39-H9WJKWJN-X0KXTKOR-K6Z9AIGQ-RUKCGZSG-S2LRQHFW',0,NULL,'2020-12-02 02:56:13','2020-12-30 08:31:59'),
+	(6,'Super','Administrator 6','None','super-admin6@gmail.com','gAAAAABf7D5YLdtIZV648CB3jiNxmAxMOc7DIB-EahbBHKDpYN1ZUgRfUHHZAGI6fUv9sx6XYdIXeTva0RT1rBnUg1lQdDG3Mg==','super-admin-6','1996-01-01',20,1,'088888','8888888888',1,'jalan atas bawah',NULL,NULL,NULL,4,NULL,0,'BPU3FZ7V-NFEVC9AH-THWBMF8K-7ON0KOWA-HJOI2TA8-28U2Q2RR-DJVXH4LA-8ML7K1VT',0,NULL,'2020-12-30 08:46:16',NULL);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;

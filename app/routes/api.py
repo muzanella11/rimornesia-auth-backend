@@ -10,6 +10,7 @@ from app.controllers.user_identity_types import UserIdentityTypes
 from app.controllers.users import Users
 from app.controllers.verification import Verification
 from app.controllers.authentication import Authentication
+from app.controllers.access_climbing_post import AccessClimbingPost
 
 @app.route('/api')
 def helloapi():
@@ -133,6 +134,28 @@ def accesscontrolupdateapi(id):
 @app.route('/access-control/<id>', methods=['DELETE'])
 def accesscontroldeleteapi(id):
     return AccessControl(request).delete_data(id)
+##################
+
+## Access Climbing Post ##
+@app.route('/climbing-post/access')
+def accessclimbingpostlistapi():
+    return AccessClimbingPost(request).get_list()
+
+@app.route('/climbing-post/access/<key>')
+def accessclimbingpostdetailapi(key):
+    return AccessClimbingPost(request).get_detail('key_access', key)
+
+@app.route('/climbing-post/access', methods=['POST'])
+def accessclimbingpostcreateapi():
+    return AccessClimbingPost(request).create_data()
+
+@app.route('/climbing-post/access/<key>', methods=['PUT'])
+def accessclimbingpostupdateapi(key):
+    return AccessClimbingPost(request).update_data(key)
+
+@app.route('/climbing-post/access/<key>', methods=['DELETE'])
+def accessclimbingpostdeleteapi(key):
+    return AccessClimbingPost(request).delete_data(key)
 ##################
 
 ## User Types ##
