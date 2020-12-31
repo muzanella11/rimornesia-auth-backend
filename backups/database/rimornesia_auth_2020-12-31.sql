@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.31)
 # Database: rimornesia_auth
-# Generation Time: 2020-12-30 22:13:20 +0000
+# Generation Time: 2020-12-31 04:51:28 +0000
 # ************************************************************
 
 
@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS `access_climbing_post`;
 
 CREATE TABLE `access_climbing_post` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `key_access` text,
   `user_id` int(11) DEFAULT NULL,
   `climbing_post_id` int(11) DEFAULT NULL,
   `is_active` int(5) DEFAULT '0',
@@ -36,6 +37,15 @@ CREATE TABLE `access_climbing_post` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `access_climbing_post` WRITE;
+/*!40000 ALTER TABLE `access_climbing_post` DISABLE KEYS */;
+
+INSERT INTO `access_climbing_post` (`id`, `key_access`, `user_id`, `climbing_post_id`, `is_active`, `is_owner`, `created_at`, `updated_at`)
+VALUES
+	(1,'BY9GGAYZ-5R9G9VNJ-BBNI82YU-WM5HCAIO-4ZUIIJXD-WAOMXNUD-YBTBQS85-JZUSCZRV',1,1,0,1,'2020-12-31 02:14:47','2020-12-31 02:19:51');
+
+/*!40000 ALTER TABLE `access_climbing_post` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table access_controls
