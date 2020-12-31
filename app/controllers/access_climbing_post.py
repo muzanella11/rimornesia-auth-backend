@@ -1,5 +1,6 @@
 from app.core.controllers import BaseControllers
 from app.models.model_access_climbing_post import ModelAccessClimbingPost
+from app.models.model_user import ModelUser
 from app.libraries.random_string import RandomString
 import re
 
@@ -97,6 +98,18 @@ class AccessClimbingPost(BaseControllers):
         }
 
         getattr(ModelAccessClimbingPost(), 'create_data')(data_model)
+        
+        # Add key access in User
+        queries = "key_access_climbing_post='{}'".format(
+            key_access
+        )
+        
+        data_model = {
+            'id': user_id,
+            'data': queries
+        }
+
+        getattr(ModelUser(), 'update_data')(data_model)
 
         return self.create_response(data)
 
