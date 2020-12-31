@@ -47,9 +47,14 @@ class ModelUser(Models):
 
         return sql_rows
 
-    def get_detail_by(self, columns = None, value = None):
+    def get_detail_by(self, columns = None, value = None, show_password = False):
+        password_field = ''
+
         if columns == "name":
             value = value.replace('-', ' ')
+
+        if show_password:
+            password_field = 'password,'
 
         sql_rows = self.execute("SELECT \
         id, \
@@ -57,6 +62,7 @@ class ModelUser(Models):
         last_name, \
         display_name, \
         email, \
+        {} \
         username, \
         dob, \
         age, \
@@ -72,7 +78,7 @@ class ModelUser(Models):
         is_verified, \
         is_verified_account, \
         completed, \
-        {}, {} from `{}` WHERE `{}` = '{}'".format(self.convert_time_zone('created_at'), self.convert_time_zone('updated_at'), self.table_name, columns, value))
+        {}, {} from `{}` WHERE `{}` = '{}'".format(password_field, self.convert_time_zone('created_at'), self.convert_time_zone('updated_at'), self.table_name, columns, value))
 
         convert_attribute_list = [
             'created_at',
