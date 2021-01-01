@@ -7,6 +7,7 @@ from app.libraries.helpers import Helpers
 from app.libraries.random_string import RandomString
 from app.libraries.token_handler import TokenHandler
 import re
+import copy
 
 class Authentication(BaseControllers):
     request = None
@@ -116,12 +117,57 @@ class Authentication(BaseControllers):
 
         UserService().update_user(data_model)
 
-        self.base_result['message'] = 'Success sign in'
-        self.base_result['data'] = {
+        result = copy.deepcopy(self.base_result)
+        result['message'] = 'Success sign in'
+        result['data'] = {
             'token': session_token
         }
 
-        return self.create_response(self.base_result)
+        return self.create_response(result)
+
+    def signout(self):
+        request_data = self.request.json
+        session_token = request_data.get('token')
+
+        if not session_token:
+            errors = [
+                {
+                    'messages': 'Token not found'
+                }
+            ]
+
+            return self.error_response(errors)
+
+        data_sql = getattr(ModelUser(), 'get_detail_by')('session_token', session_token)
+        user_data = data_sql.get('data')
+
+        if not user_data:
+            errors = [
+                {
+                    'messages': 'Wrong token'
+                }
+            ]
+
+            return self.error_response(errors)
+
+        user_id = user_data['id']
+
+        queries = "session_token=''"
+        
+        data_model = {
+            'id': user_id,
+            'data': queries
+        }
+
+        # Clear session token
+        UserService().update_user(data_model)
+
+        result = copy.deepcopy(self.base_result)
+        result['message'] = 'Success sign out'
+
+        del result['data']
+
+        return self.create_response(result)
 
     def create_data(self):
         data = {
@@ -240,8 +286,8 @@ class Authentication(BaseControllers):
         session_user_created = session_user_detail['data']['created_at']
         
         session_expired = TokenHandler({
-            'time_by': 'minute',
-            'time_by_value': 1,
+            'time_by': 'hours',
+            'time_by_value': 48,
             'session_time': session_user_created
         }).create_expired_time()
 
@@ -297,12 +343,13 @@ class Authentication(BaseControllers):
 
                 user_data = user_data_sql.get('data')
         
-        self.base_result['message'] = 'Success'
-        self.base_result['data'] = {
+        result = copy.deepcopy(self.base_result)
+        result['message'] = 'Success'
+        result['data'] = {
             'is_expired': is_expired,
             'expired': whoami_expired,
             'whoami': user_data
         }
 
-        return self.create_response(self.base_result)
+        return self.create_response(result)
         
