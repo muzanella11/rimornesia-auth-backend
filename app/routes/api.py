@@ -227,6 +227,10 @@ def signinapi():
 def signupapi():
     return Authentication(request).create_data()
 
+@app.route('/auth/signout', methods=['POST'])
+def signoutapi():
+    return Authentication(request).signout()
+
 @app.route('/auth/whoami/<token>', methods=['POST'])
 def whoamiapi(token):
     return Authentication(request).whoami(token)
